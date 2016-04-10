@@ -34,7 +34,7 @@
 	4. 父进程写入管道
 	```
 
-* 有名管道: mkfifo函数 (mkfifo.c)  
+* 有名管道: mkfifo函数 (mkfifo.c) , First Input First Output  
 	> 有名就是文件系统中存在这个文件节点, 有inode号, 文件类型为p管道类型.  
 	> mkfifo用来创建管道文件节点, 没有在内核中创建管道, 只有通过open函数打开这个文件时才会在内核空间创建管道.  
 
@@ -44,4 +44,13 @@
 	
 	管道文件只有inode号, 不占磁盘块空间, 和套结字\字符设备文件一样;  
 	普通文件和符号链接文件及目录文件, 不仅有inode号, 还占磁盘空间.  
+	```
+	```
+	# 非亲缘关系文件间进程通信
+	gcc -o build mkfifo.c  
+	./build  
+	gcc -o first first_mkfifo.c  
+	gcc -o second second_mkfifi.c  
+	./first     # 第一个终端  
+	./second    # 第二个终端  
 	```
