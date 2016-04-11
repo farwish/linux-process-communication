@@ -55,9 +55,7 @@
 	./second    # 第二个终端  
 	```
 
-* 信号通信(mykill.c) 
-	`kill -l` 查看系统中的信号
-
+* 信号通信: mykill.c , `kill -l` 查看系统中的信号  
 	```
 	gcc -o build while.c
 	./build
