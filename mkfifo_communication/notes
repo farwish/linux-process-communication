@@ -1,6 +1,0 @@
-gcc -o build mkfifo.c
-./build
-gcc -o first first_mkfifo.c
-gcc -o second second_mkfifi.c
-./first		# 第一个终端
-./second	# 第二个终端
