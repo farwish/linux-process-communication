@@ -62,7 +62,7 @@
 	gcc -o mykill mykill.c
 	./mykill 9 pid
 	```
-* 信号通信框架
-	> 信号的发送(发送信号进程): kill raise alarm
-	> 信号的接收(接收信号进程): pause() sleep while()
-	> 信号的处理(接收信号进程): signal
+* 信号通信框架 
+	> 信号的发送(发送信号进程): kill() , raise() , alarm()
+	> 信号的接收(接收信号进程): pause() , sleep() , while() 让进程不退出
+	> 信号的处理(接收信号进程): signal()
