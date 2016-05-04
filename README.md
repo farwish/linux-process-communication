@@ -64,10 +64,11 @@
 	```
 * 信号通信框架  
 	信号的发送(发送信号进程): `kill()` , `raise()` , `alarm()`  
-```
-	int kill(pid_t pid, int sig);  send a signal to a process or a group of processes
-	int raise(int sig);  send a signal to the caller
-	unsigned alarm(unsigned seconds);  schedule an alarm signal
-```
+	> int kill(pid_t pid, int sig);  // send a signal to a process or a group of processes, 可以向任意进程发送不同信号  
+	> int raise(int sig);  // send a signal to the caller, 只能向当前进程发送不同信号   
+	> unsigned alarm(unsigned seconds);  // schedule an alarm signal, 发送闹钟信号  
+
 	信号的接收(接收信号进程): `pause()` , `sleep()` , `while(1)`  
+
 	信号的处理(接收信号进程): `signal()`  
+	> 第一个参数: 处理哪个信号; 第二个参数: 采用什么方式处理(1.忽略:SIG_IGN, 2.默认的:SIG_DFL,3.自定义的)
