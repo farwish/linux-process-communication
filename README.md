@@ -74,3 +74,11 @@
 	信号的处理(接收信号进程): `signal()`  
 	> 第一个参数: 处理哪个信号;  
 	> 第二个参数: 采用什么方式处理(1.忽略:SIG_IGN, 2.默认的:SIG_DFL,3.自定义的)  
+
+* IPC通信 (文件IO的思想)
+
+	|文件I/O		| IPC
+	|---			|---
+	|open			| msgget<br/> shmget<br/> semget
+	|read<br/> write	| msgsnd msgrecv<br/> shmat shmdt<br/> semop
+	|close			| msgctrl<br/> shmctrl<br/> semctrl
