@@ -110,9 +110,8 @@
 	`shmdt`: 删除共享内存在用户空间地址的映射.  
 	
 	`shmctl`: 删除共享内存对象. (shmget_shmat_shmctl.c)  
-	
+	( `int shmctl(int shmid, int cmd, struct shmid_ds *buf)` )
 	```
-	`int shmctl(int shmid, int cmd, struct shmid_ds *buf)`  
 	cmd:  
 	IPC_STAT(获取对象属性,实现了ipcs -m)  
 	IPC_SET(设置对象属性)  
