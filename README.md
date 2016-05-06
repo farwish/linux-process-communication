@@ -35,8 +35,10 @@
 	```
 
 * 有名管道: mkfifo函数 (mkfifo.c) , First Input First Output  
-	> 有名就是文件系统中存在这个文件节点, 有inode号, 文件类型为p管道类型.  
-	> mkfifo用来创建管道文件节点, 没有在内核中创建管道, 只有通过open函数打开这个文件时才会在内核空间创建管道.  
+	```
+	有名就是文件系统中存在这个文件节点, 有inode号, 文件类型为p管道类型.  
+	mkfifo用来创建管道文件节点, 没有在内核中创建管道, 只有通过open函数打开这个文件时才会在内核空间创建管道.  
+	```
 
 	```
 	open函数只能创建普通文件  
@@ -65,15 +67,19 @@
 * 信号通信框架  
 
 	信号的发送(发送信号进程): `kill()` , `raise()` , `alarm()`  
-	> `int kill(pid_t pid, int sig)`  // send a signal to a process or a group of processes, 可以向任意进程发送不同信号  
-	> `int raise(int sig)`  // send a signal to the caller, 只能向当前进程发送不同信号   
-	> `unsigned alarm(unsigned seconds)`  // schedule an alarm signal, 发送闹钟信号  
+	```
+	`int kill(pid_t pid, int sig)`  // send a signal to a process or a group of processes, 可以向任意进程发送不同信号  
+	`int raise(int sig)`  // send a signal to the caller, 只能向当前进程发送不同信号   
+	`unsigned alarm(unsigned seconds)`  // schedule an alarm signal, 发送闹钟信号  
+	```
 
 	信号的接收(接收信号进程): `pause()` , `sleep()` , `while(1)`  
 
 	信号的处理(接收信号进程): `signal()`  
-	> 第一个参数: 处理哪个信号;  
-	> 第二个参数: 采用什么方式处理(忽略:SIG_IGN, 默认的:SIG_DFL, 自定义的)  
+	```
+	第一个参数: 处理哪个信号;  
+	第二个参数: 采用什么方式处理(忽略:SIG_IGN, 默认的:SIG_DFL, 自定义的)  
+	```
 
 * IPC通信 (文件IO的思想)  
 
@@ -86,22 +92,25 @@
 	共享内存 shared memory （sys/shm.h）  
 	
 	`shmget`: 创建一个共享内存, 通过 IPC_PRIVATE宏 创建的共享内存, key始终为0x00000000. (shmget.c)  
-	> `ipcs -q`	查看消息队列  
-	> `ipcs -m`	查看共享内存段  
-	> `ipcs -s`	查看信号量数组  
-	> `ipcrm -m ID`	按ID号移除共享内存段  
+	```
+	`ipcs -q`	查看消息队列  
+	`ipcs -m`	查看共享内存段  
+	`ipcs -s`	查看信号量数组  
+	`ipcrm -m ID`	按ID号移除共享内存段  
+	```
 
-	`ftok`: 创建key值, 作为 shmget 的第一个参数使用, 此时 shmget 第三个参数必须是IPC_CREAT, 此时创建的共享内存是非亲缘关系的;  
-	ftok 的参数不变时, 不会创建多个key. (shmget_ftok.c)  
+	`ftok`: 创建key值, 作为 shmget 的第一个参数使用, 此时 shmget 第三个参数必须是IPC_CREAT, 此时创建的共享内存是非亲缘关系的; ftok 的参数不变时, 不会创建多个key. (shmget_ftok.c)  
 
-	`shmat`: 将共享内存映射到用户空间的地址上, 便于高效读写, 第二个参数NULL表示由系统随机分配, 第三个参数0允许读写. (shmget_shmat.c) ```
+	`shmat`: 将共享内存映射到用户空间的地址上, 便于高效读写, 第二个参数NULL表示由系统随机分配, 第三个参数0允许读写. (shmget_shmat.c)  
+	```
 	共享内存创建之后, 一直存在于内核中, 直到被删除或系统关系.  
 	共享内存和管道不一样, 读取后, 内容仍在其共享内存中.  
 	```
-
+	
 	`shmdt`: 删除共享内存在用户空间地址的映射.  
-
+	
 	`shmctl`: 删除共享内存对象. (shmget_shmat_shmctl.c)  
+	
 	```
 	`int shmctl(int shmid, int cmd, struct shmid_ds *buf)`  
 	cmd:  
