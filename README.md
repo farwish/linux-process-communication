@@ -85,23 +85,31 @@
 
 	共享内存 shared memory （sys/shm.h）  
 	
-	shmget: 创建一个共享内存, 通过 IPC_PRIVATE宏 创建的共享内存, key始终为0x00000000. (shmget.c)  
+	`shmget`: 创建一个共享内存, 通过 IPC_PRIVATE宏 创建的共享内存, key始终为0x00000000. (shmget.c)  
 	> `ipcs -q`	查看消息队列  
 	> `ipcs -m`	查看共享内存段  
 	> `ipcs -s`	查看信号量数组  
 	> `ipcrm -m ID`	按ID号移除共享内存段  
 
-	ftok: 创建key值, 作为 shmget 的第一个参数使用, 此时 shmget 第三个参数必须是IPC_CREAT, 此时创建的共享内存是非亲缘关系的; ftok 的参数不变时, 不会创建多个key. (shmget_ftok.c)  
+	`ftok`: 创建key值, 作为 shmget 的第一个参数使用, 此时 shmget 第三个参数必须是IPC_CREAT, 此时创建的共享内存是非亲缘关系的;  
+	ftok 的参数不变时, 不会创建多个key. (shmget_ftok.c)  
 
-	shmat: 将共享内存映射到用户空间的地址上, 便于高效读写, 第二个参数NULL表示由系统随机分配, 第三个参数0允许读写. (shmget_shmat.c)  
-	> 共享内存创建之后, 一直存在于内核中, 直到被删除或系统关系.  
-	> 共享内存和管道不一样, 读取后, 内容仍在其共享内存中.  
+	`shmat`: 将共享内存映射到用户空间的地址上, 便于高效读写, 第二个参数NULL表示由系统随机分配, 第三个参数0允许读写. (shmget_shmat.c) ```
+	共享内存创建之后, 一直存在于内核中, 直到被删除或系统关系.  
+	共享内存和管道不一样, 读取后, 内容仍在其共享内存中.  
+	```
 
-	shmdt: 删除共享内存在用户空间地址的映射.  
+	`shmdt`: 删除共享内存在用户空间地址的映射.  
 
-	shmctl: 删除共享内存对象. (shmget_shmat_shmctl.c)  
-		`int shmctl(int shmid, int cmd, struct shmid_ds *buf)`  
-		cmd 可以是 IPC_STAT(获取对象属性,实现了ipcs -m) \ IPC_SET(设置对象属性) \ IPC_RMID(删除对象,实现了ipcrm -m).  
-		buf 指定IPC_STAT \ IPC_SET 时用以保存/设置属性.  
+	`shmctl`: 删除共享内存对象. (shmget_shmat_shmctl.c)  
+	```
+	`int shmctl(int shmid, int cmd, struct shmid_ds *buf)`  
+	cmd:  
+	IPC_STAT(获取对象属性,实现了ipcs -m)  
+	IPC_SET(设置对象属性)  
+	IPC_RMID(删除对象,实现了ipcrm -m)  
+	buf:  
+	指定IPC_STAT, IPC_SET 时用以保存/设置属性  
+	```
 
 
