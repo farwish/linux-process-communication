@@ -96,3 +96,12 @@
 	shmat: 将共享内存映射到用户空间的地址上, 便于高效读写, 第二个参数NULL表示由系统随机分配, 第三个参数0允许读写. (shmget_shmat.c)  
 	> 共享内存创建之后, 一直存在于内核中, 直到被删除或系统关系.  
 	> 共享内存和管道不一样, 读取后, 内容仍在其共享内存中.  
+
+	shmdt: 删除共享内存在用户空间地址的映射.  
+
+	shmctl: 删除共享内存对象. (shmget_shmat_shmctl.c)  
+		`int shmctl(int shmid, int cmd, struct shmid_ds *buf)`  
+		cmd 可以是 IPC_STAT(获取对象属性,实现了ipcs -m) \ IPC_SET(设置对象属性) \ IPC_RMID(删除对象,实现了ipcrm -m).  
+		buf 指定IPC_STAT \ IPC_SET 时用以保存/设置属性.  
+
+
