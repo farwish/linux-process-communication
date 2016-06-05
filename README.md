@@ -147,5 +147,6 @@
 	IPC_RMID(删除对象,实现了ipcrm -m)
 
 	buf:  
+	
 	指定IPC_STAT, IPC_SET 时用以保存/设置属性  
 	```
