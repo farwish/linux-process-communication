@@ -58,20 +58,29 @@
 	```
 	```
 	# 非亲缘关系文件间进程通信
-	gcc -o build mkfifo.c  
-	./build  
-	gcc -o first first_mkfifo.c  
-	gcc -o second second_mkfifi.c  
-	./first     # 第一个终端  
+
+	gcc -o build mkfifo.c
+
+	./build
+
+	gcc -o first first_mkfifo.c
+
+	gcc -o second second_mkfifi.c
+
+	./first     # 第一个终端
+
 	./second    # 第二个终端  
 	```
 
 * 信号通信: mykill.c , `kill -l` 查看系统中的信号  
 	```
 	gcc -o build while.c
+
 	./build
+
 	gcc -o mykill mykill.c
-	./mykill 9 pid
+
+	./mykill 9 pid  
 	```
 * 信号通信框架  
 
@@ -88,7 +97,8 @@
 
 	信号的处理(接收信号进程): `signal()`  
 	```
-	第一个参数: 处理哪个信号;  
+	第一个参数: 处理哪个信号;
+
 	第二个参数: 采用什么方式处理(忽略:SIG_IGN, 默认的:SIG_DFL, 自定义的)  
 	```
 
@@ -114,11 +124,12 @@
 	`ipcrm -m ID`	按ID号移除共享内存段  
 	```
 
-	`ftok`: 创建key值, 作为 shmget 的第一个参数使用, 此时 shmget 第三个参数必须是IPC_CREAT, 此时创建的共享内存是非亲缘关系的; ftok 的参数不变时, 不会创建多个key. (shmget_ftok.c)  
+	`ftok`: 创建key值, 作为 shmget 的第一个参数使用, 此时 shmget 第三个参数必须是IPC_CREAT, 此时创建的共享内存是非亲缘关系的; ftok 的参数不变时, 不会创建多个key. (shmget_ftok.c)
 
 	`shmat`: 将共享内存映射到用户空间的地址上, 便于高效读写, 第二个参数NULL表示由系统随机分配, 第三个参数0允许读写. (shmget_shmat.c)  
 	```
-	共享内存创建之后, 一直存在于内核中, 直到被删除或系统关系.  
+	共享内存创建之后, 一直存在于内核中, 直到被删除或系统关系.
+
 	共享内存和管道不一样, 读取后, 内容仍在其共享内存中.  
 	```
 	
@@ -128,11 +139,13 @@
 	( `int shmctl(int shmid, int cmd, struct shmid_ds *buf)` )
 	```
 	cmd:  
-	IPC_STAT(获取对象属性,实现了ipcs -m)  
-	IPC_SET(设置对象属性)  
-	IPC_RMID(删除对象,实现了ipcrm -m)  
+
+	IPC_STAT(获取对象属性,实现了ipcs -m)
+
+	IPC_SET(设置对象属性)
+
+	IPC_RMID(删除对象,实现了ipcrm -m)
+
 	buf:  
 	指定IPC_STAT, IPC_SET 时用以保存/设置属性  
 	```
-
-
