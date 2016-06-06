@@ -118,7 +118,7 @@ gcc -o mykill mykill.c
 
 共享内存 shared memory （sys/shm.h）  
 	
-`shmget`: 创建一个共享内存, 通过 IPC_PRIVATE宏 创建的共享内存, key始终为0x00000000. (shmget.c)
+`shmget`: 创建一个共享内存, 通过 IPC_PRIVATE宏 创建的共享内存(用于有亲缘关系的进程间通信), key始终为0x00000000. (shmget.c)
 
 ```
 `ipcs -q`	查看消息队列
