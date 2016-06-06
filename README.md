@@ -19,7 +19,7 @@
 	```
 
 ### 无名管道: pipe函数 (pipe.c , fork_2.c 含注释)  
-	`＃include <unistd.h>`
+`＃include <unistd.h>`
 
 	```
 	创建父进程与子进程, 并在内核空间创建一个管道, 子进程先读管道内容, 没有内容有读阻塞;
@@ -43,8 +43,8 @@
 	```
 
 ### 有名管道: mkfifo函数 (mkfifo.c) , First Input First Output  
-	`#include <sys/types.h>`
-	`#include <sys/stat.h>`
+`#include <sys/types.h>`  
+`#include <sys/stat.h>`  
 
 	```
 	有名就是文件系统中存在这个文件节点, 有inode号, 文件类型为p管道类型.
@@ -77,7 +77,7 @@
 	```
 
 ### 信号通信: mykill.c , `kill -l` 查看系统中的信号  
-	`#include <signal.h>`
+`#include <signal.h>`  
 
 	```
 	gcc -o build while.c
@@ -109,7 +109,7 @@
 	```
 
 ### IPC通信 (文件IO的思想)  
-	`#include <sys/shm.h>`
+`#include <sys/shm.h>`  
 
 	|文件I/O		| IPC
 	|---			|---
