@@ -75,7 +75,8 @@ gcc -o second second_mkfifi.c
 ./second    # 第二个终端  
 ```
 
-### 信号通信: mykill.c , `kill -l` 查看系统中的信号 ( signal.h )  
+### 信号通信: mykill.c ( signal.h )  
+`kill -l` 查看系统中的信号; SIGUSER1, SIGUSER2 用于自定义信号处理函数，其余都是系统定义好的处理.
 
 ```
 gcc -o build while.c
@@ -86,16 +87,23 @@ gcc -o mykill mykill.c
 
 ./mykill 9 pid  
 ```
+
 * 信号通信框架  
 
 信号的发送(发送信号进程): `kill()` , `raise()` , `alarm()`  
 	
 ```
-`int kill(pid_t pid, int sig)`  // send a signal to a process or a group of processes, 可以向任意进程发送不同信号
+`int kill(pid_t pid, int sig)`  
+send a signal to a process or a group of processes  
+可以向任意进程发送不同信号  
 
-`int raise(int sig)`  // send a signal to the caller, 只能向当前进程发送不同信号
+`int raise(int sig)`  
+send a signal to the caller  
+只能向当前进程发送不同信号  
 
-`unsigned alarm(unsigned seconds)`  // schedule an alarm signal, 发送闹钟信号  
+`unsigned alarm(unsigned seconds)`  
+schedule an alarm signal  
+发送闹钟信号  
 ```
 
 信号的接收(接收信号进程): `pause()` , `sleep()` , `while(1)`  
