@@ -18,7 +18,9 @@
 	进程通信思路, 每一种通信方式都是基于文件IO的思想.  
 	```
 
-* 无名管道: pipe函数 (pipe.c , fork_2.c 含注释)  
+### 无名管道: pipe函数 (pipe.c , fork_2.c 含注释)  
+	`＃include <unistd.h>`
+
 	```
 	创建父进程与子进程, 并在内核空间创建一个管道, 子进程先读管道内容, 没有内容有读阻塞;
 
@@ -40,7 +42,10 @@
 	4. 父进程写入管道  
 	```
 
-* 有名管道: mkfifo函数 (mkfifo.c) , First Input First Output  
+### 有名管道: mkfifo函数 (mkfifo.c) , First Input First Output  
+	`#include <sys/types.h>`
+	`#include <sys/stat.h>`
+
 	```
 	有名就是文件系统中存在这个文件节点, 有inode号, 文件类型为p管道类型.
 
@@ -71,7 +76,9 @@
 	./second    # 第二个终端  
 	```
 
-* 信号通信: mykill.c , `kill -l` 查看系统中的信号  
+### 信号通信: mykill.c , `kill -l` 查看系统中的信号  
+	`#include <signal.h>`
+
 	```
 	gcc -o build while.c
 
@@ -101,7 +108,8 @@
 	第二个参数: 采用什么方式处理(忽略:SIG_IGN, 默认的:SIG_DFL, 自定义的)  
 	```
 
-* IPC通信 (文件IO的思想)  
+### IPC通信 (文件IO的思想)  
+	`#include <sys/shm.h>`
 
 	|文件I/O		| IPC
 	|---			|---
