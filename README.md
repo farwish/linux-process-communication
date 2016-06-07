@@ -88,7 +88,7 @@ gcc -o mykill mykill.c
 ./mykill 9 pid  
 ```
 
-* 信号通信框架  
+#### 信号通信框架  
 
 信号的发送(发送信号进程): `kill()` , `raise()` , `alarm()`  
 	
@@ -108,11 +108,24 @@ schedule an alarm signal
 
 信号的接收(接收信号进程): `pause()` , `sleep()` , `while(1)`  
 
-信号的处理(接收信号进程): `signal()`  
-	
 ```
-第一个参数: 处理哪个信号;
+`int pause(void)`  
+suspend the thread until a signal is received  
+暂停一个线程直到接收到一个信号  
 
+`unsigned int sleep(unsigned int seconds)`  
+sleep for the specified number of seconds  
+睡眠指定数量的秒数  
+```
+
+信号的处理(接收信号进程): `signal()`  
+
+```
+`void (*signal(int sig, void (*func)(int)))(int)`  
+signal management
+信号管理
+
+第一个参数: 处理哪个信号;  
 第二个参数: 采用什么方式处理(忽略:SIG_IGN, 默认的:SIG_DFL, 自定义的)  
 ```
 
@@ -124,7 +137,7 @@ schedule an alarm signal
 |read<br/> write	| msgsnd msgrecv<br/> shmat shmdt<br/> semop
 |close			| msgctrl<br/> shmctrl<br/> semctrl
 
-共享内存 shared memory （sys/shm.h）  
+#### 共享内存 shared memory （sys/shm.h）  
 	
 `shmget`: 创建一个共享内存, 通过 IPC_PRIVATE宏 创建的共享内存(用于有亲缘关系的进程间通信), key始终为0x00000000. (shmget.c)
 
@@ -165,4 +178,46 @@ IPC_RMID(删除对象,实现了ipcrm -m)
 buf:  
 	
 指定IPC_STAT, IPC_SET 时用以保存/设置属性  
+```
+
+#### 共享内存通信  
+
+( 父子进程间通信: shm_server.c, shm_client.c )  ( 单向: 一个共享内存, 双向: 两个共享内存 )  
+
+```
+ ------------------           -----------------  
+| (parent process) |         | (child process) |  
+| 3.用户空间       | 2.fork  | 4.用户空间      |  
+|  (1)signal       | ------> |  (1)signal      |  
+|  (2)shmat        |         |  (2)shmat       |  
+|  (3)write        |         |  (3)pause       |  
+|  (4)kill         |         |  (4)kill        |  
+|  (5)pause        |         |                 |  
+ ------------------           -----------------  
+        /|\       ------------       /|\  
+         |_______|  共享内存  | ______|  
+                 |  1.shmget  |  
+                  ------------  
+```
+
+( 无亲缘关系进程间通信: shm_server.c , shm_client.c )
+
+```
+ ---------------------           ---------------------  
+| (server process)    |         | (chient process)    |  
+| 3.用户空间          |         | 4.用户空间          |  
+|  (1)signal          |         |  (1)signal          |  
+|  (2)shmat           |         |  (2)shmat           |  
+|  (3)p->pid=getpid() |         |  (3)pid=p->pid      |  
+|  (4)pause           |         |  (4)p->pid=getpid() |  
+|  (5)pid=p->pid      |         |  (5)kill            |
+|                     |         |                     |
+|  (6)write           |         |  (6)pause           |
+|  (7)kill            |         |  (7)kill            |
+|  (8)pause           |         |                     |
+ ---------------------           ---------------------
+        | /|\         ------------       | /|\  
+        |  --------- |  共享内存  | <----   |  
+         -(p->pid)-> |  1.shmget  | ---pid--
+                      ------------  
 ```
