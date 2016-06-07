@@ -88,7 +88,7 @@ gcc -o mykill mykill.c
 ./mykill 9 pid  
 ```
 
-* 信号通信框架  
+#### 信号通信框架  
 
 信号的发送(发送信号进程): `kill()` , `raise()` , `alarm()`  
 	
@@ -137,7 +137,7 @@ signal management
 |read<br/> write	| msgsnd msgrecv<br/> shmat shmdt<br/> semop
 |close			| msgctrl<br/> shmctrl<br/> semctrl
 
-共享内存 shared memory （sys/shm.h）  
+#### 共享内存 shared memory （sys/shm.h）  
 	
 `shmget`: 创建一个共享内存, 通过 IPC_PRIVATE宏 创建的共享内存(用于有亲缘关系的进程间通信), key始终为0x00000000. (shmget.c)
 
@@ -180,9 +180,9 @@ buf:
 指定IPC_STAT, IPC_SET 时用以保存/设置属性  
 ```
 
-共享内存通信  
-( 父子进程间通信: shm_communication.c )  
-( 单向: 一个共享内存, 双向: 两个共享内存 )  
+#### 共享内存通信  
+
+( 父子进程间通信: shm_server.c, shm_client.c )  ( 单向: 一个共享内存, 双向: 两个共享内存 )  
 
 ```
  ------------------           -----------------  
