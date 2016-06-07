@@ -108,11 +108,24 @@ schedule an alarm signal
 
 信号的接收(接收信号进程): `pause()` , `sleep()` , `while(1)`  
 
-信号的处理(接收信号进程): `signal()`  
-	
 ```
-第一个参数: 处理哪个信号;
+`int pause(void)`  
+suspend the thread until a signal is received  
+暂停一个线程直到接收到一个信号  
 
+`unsigned int sleep(unsigned int seconds)`  
+sleep for the specified number of seconds  
+睡眠指定数量的秒数  
+```
+
+信号的处理(接收信号进程): `signal()`  
+
+```
+`void (*signal(int sig, void (*func)(int)))(int)`  
+signal management
+信号管理
+
+第一个参数: 处理哪个信号;  
 第二个参数: 采用什么方式处理(忽略:SIG_IGN, 默认的:SIG_DFL, 自定义的)  
 ```
 
@@ -165,4 +178,22 @@ IPC_RMID(删除对象,实现了ipcrm -m)
 buf:  
 	
 指定IPC_STAT, IPC_SET 时用以保存/设置属性  
+```
+
+共享内存通信(单向), shm_communication.c  
+
+```
+ ------------------           -----------------
+| (parent process) |		 | (child process) |
+| 3.用户空间       | 2.fork  | 4.用户空间      |
+|  (1)signal       | ------> |  (1)signal      |
+|  (2)shmat        |         |  (2)shmat       |
+|  (3)write        |         |  (3)pause       |
+|  (4)kill         |         |  (4)kill        |
+|  (5)pause        |         |                 |
+ ------------------           -----------------
+        /|\       ------------       /|\
+		 |______ |	共享内存  | ______|
+				 |	1.shmget  |
+                  ------------
 ```
