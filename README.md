@@ -221,3 +221,30 @@ buf:
          -(p->pid)-> |  1.shmget  | ---pid--
                       ------------  
 ```
+
+#### 消息队列 (sys/msg.h) ( msgget_msg_ctl.c , msgsnd.c )  
+
+`int msgget(key_t key, int msgflag)`  
+get the XSI message queue identifier  
+创建消息队列标示符  
+
+`int msgctl(int msgid, int cmd, struct msgid_ds *buf)`  
+XSI message control operations  
+消息控制操作  
+
+`int msgsnd(int msgid, const void *msgp, size_t msgsz, int msgflag)`  
+XSI message send operation  
+消息发送操作 (阻塞 / 非阻塞)
+
+`ssize_t msgrcv(int msgid, void *msgp, size_t msgsz, long msgtyp, int msgflag)`
+XSI message receive operation  
+消息接收操作 (阻塞 / 非阻塞)
+
+#### 消息对列通信 ( msg_server.c , msg_client.c )  
+
+使用 ftok 生成的key, 创建的 shmid 可以用于通信.  
+
+特点: 读写都不需要发信号给对方进程.  
+1. 读后消息就被删除了  
+2. 设为阻塞方式  
+
