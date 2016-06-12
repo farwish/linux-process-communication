@@ -240,11 +240,17 @@ XSI message send operation
 XSI message receive operation  
 消息接收操作 (阻塞 / 非阻塞)
 
-#### 消息对列通信 ( msg_server.c , msg_client.c )  
+#### 消息队列单向通信 ( msg_server.c , msg_client.c )  
 
-使用 ftok 生成的key, 创建的 shmid 可以用于通信.  
+使用 ftok 生成的key, 创建的 shmid 可以用于通信, server写, client读;  
 
 特点: 读写都不需要发信号给对方进程.  
-1. 读后消息就被删除了  
-2. 设为阻塞方式  
+1. 读完后消息就被删除了  
+2. 可以设为阻塞方式,很方便实现单向通信  
 
+#### 消息队列双向通信 ( msg_write_read_server.c , msg_write_read_client.c )
+
+server通过创建子进程进行读取, 注意消息结构体的type不一样;  
+clinet通过创建子进程进行写, 注意消息结构体的type不一样;  
+
+( 管道\共享内存要实现双向通信, 只能创建两个管道\共享内存. )  

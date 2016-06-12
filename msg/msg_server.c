@@ -3,14 +3,15 @@
 #include <sys/msg.h>
 #include <string.h>
 
+typedef struct {
+	long type;
+	char text[124];
+} msg_buf;
+
 int main()
 {	
 	int msgid;
-	typedef struct {
-		long type;
-		char text[124];
-	} msg_buf;
-	msg_buf sendbuf, recvbuf;
+	msg_buf sendbuf;
 	int key;
 
 	key = ftok("a.c", 1);
@@ -27,15 +28,19 @@ int main()
 		return -2;
 	}
 
+	system("ipcs -q");
+
 	printf("server msgid = %d\n", msgid);
 
 	while (1) {
-		memset(sendbuf.text, 0, strlen(sendbuf.text));
+		// 缓存初始化
+		memset(sendbuf.text, 0, 124);
+
 		sendbuf.type = 100;
 
 		printf("server start write:\n");
 
-		fgets(sendbuf.text, 0, stdin);
+		fgets(sendbuf.text, 124, stdin);
 
 		msgsnd(msgid, (void *)&sendbuf, strlen(sendbuf.text), 0);
 	}
