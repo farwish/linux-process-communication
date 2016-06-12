@@ -129,7 +129,7 @@ signal management
 第二个参数: 采用什么方式处理(忽略:SIG_IGN, 默认的:SIG_DFL, 自定义的)  
 ```
 
-### IPC通信 (文件IO的思想, sys/shm.h )  
+### IPC通信 (文件IO的思想, 共享内存/消息队列/信号灯 )  
 
 |文件I/O		| IPC
 |---			|---
@@ -254,3 +254,19 @@ server通过创建子进程进行读取, 注意消息结构体的type不一样;
 clinet通过创建子进程进行写, 注意消息结构体的type不一样;  
 
 ( 管道\共享内存要实现双向通信, 只能创建两个管道\共享内存. )  
+
+#### 信号灯: 多个信号灯 ( sem/semget.c )
+
+`int semget(key_t key, int nsems, int semflg)`  
+get set of XSI semaphores  
+获得信号量的标示符  
+
+`int semctl(int semid, int semnum, int cmd, ...)`  
+ XSI semaphore control operations  
+信号量管理操作  
+
+#### 信号量实现线程间通信: 取代使用全局变量的方式 ( sem/thread.c )  
+( gcc -o build thread.c -pthread )
+
+
+
