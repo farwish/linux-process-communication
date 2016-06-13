@@ -255,7 +255,9 @@ clinet通过创建子进程进行写, 注意消息结构体的type不一样;
 
 ( 管道\共享内存要实现双向通信, 只能创建两个管道\共享内存. )  
 
-#### 信号灯: 多个信号灯 ( sem/semget.c )
+#### 信号灯: 多个信号灯 ( sem/semget.c ) ( sys/ipc.h, sys/sem.h )
+
+信号灯在多线程环境下使用, 用来保证两个或多个关键代码段不被并发调用.  
 
 `int semget(key_t key, int nsems, int semflg)`  
 get set of XSI semaphores  
@@ -265,8 +267,18 @@ get set of XSI semaphores
  XSI semaphore control operations  
 信号量管理操作  
 
+`int semop(int semid, struct sembuf *sops, size_t nsops);`  
+XSI semaphore operations  
+信号量操作  
+
 #### 信号量实现线程间通信: 取代使用全局变量的方式 ( sem/thread.c )  
 ( gcc -o build thread.c -pthread )
+
+`sem_wait()`  
+
+`sem_init`
+
+`sem_post`  
 
 
 

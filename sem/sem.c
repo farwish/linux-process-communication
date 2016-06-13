@@ -4,17 +4,28 @@
 #include <sys/ipc.h>
 #include <sys/sem.h>
 
-int semid;
 union semun {
-	int val;
+	int val; // 设置信号灯的值
 	struct semid_ds *buf;
 	unsigned short *array;
-} arg;
+};
+
+struct sembuf {
+	short sem_num;  // 信号量标号
+	short sem_op;   // 信号量操作
+	short sem_flag; // 阻塞或非阻塞
+}
+
+int semid;
+union semun mysemun;
+struct sembuf mysembuf;
 
 void *fun(void *p)
 {
 	int i;
-	sem_wait(&sem);
+
+	semop();
+	// sem_wait(&sem);
 	for (i = 0; i < 5; i++) {
 		usleep(100);
 		printf("child pthread i is %d\n", i);
@@ -30,23 +41,37 @@ int main()
 	int j;
 
 	// 创建信号灯标示符
-	semget(IPC_PRIVATE, 3, 0777);
+	semid = semget(IPC_PRIVATE, 3, 0777);
 	if (semid < 0) {
 		printf("create semaphore failure\n");
-		return -1;
+		exit(1);
 	}
 	printf("semaphore semid = %d\n", semid);
 
 	system("ipcs -s");
 
-	// 初始化
-	semctl();
+	// 初始化信号灯
+	mysemun.val = 0;
+	ret = semctl(semid, 0, SETVAL, mysemun);
+	if (ret < 0) {
+		printf("semctl setval failure\n");	
+		exit(1);
+	}
+
+	mysembuf.sem_num = 0;
+	mysembuf.sem_op = 0;
+	mysembuf.sem_flag = 0;
+	ret = semop(semid, &mysembuf, 3);
+	if (ret < 0) {
+		printf("IPC error: semop\n");
+		exit(1);
+	}
 
 	ret = pthread_create(&tid, NULL, fun, (void *)str);
 
 	if (ret < 0) {
 		printf("create pthread failure\n");
-		return -1;
+		exit(1);
 	}
 
 	for (j = 0; j < 5; j++) {
@@ -54,7 +79,7 @@ int main()
 		usleep(100);
 	}
 
-	sem_post(&sem);
+	//sem_post(&sem);
 
 	sleep(2);
 
